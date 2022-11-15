@@ -1,5 +1,6 @@
 import socket
 import json
+import time
 
 import client_command_parser
 
@@ -13,7 +14,7 @@ class Network():
 
 		self.client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 		self.server = "127.0.0.1"
-		self.port = 54552
+		self.port = 54553
 		self.address = (self.server, self.port)
 
 		self.is_connection_established = self.connect()

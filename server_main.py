@@ -13,14 +13,16 @@ import socket
 import json
 from _thread import *
 from server_command_parser import CommandParser
+from game_manager import GameManager
 
 class Server():
 
 	def __init__(self):
 
 		self.server = "127.0.0.1"
-		self.port = 54552
+		self.port = 54553
 
+		self.gameManager = GameManager()
 		self.commandParser = CommandParser()
 
 		self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -56,8 +58,6 @@ class Server():
 					break
 				else:
 
-					# If we are receiving data, we'll send a reply
-					# NOTE: This might be where we listen for specific commands?
 					response_message = self.handleIncomingMessage(connection, data)
 					connection.sendall(response_message)
 

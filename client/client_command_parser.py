@@ -14,6 +14,13 @@ class CommandParser():
 
 			result = self.handleSampleMessage(message)
 
+		else:
+
+			result = {"command" : "error, the command doesnt have a handler"}
+			print('command doesnt have handler')
+			print('this message couldnt be parsed:')
+			print(message)
+
 		return result
 
 	def handleAffirmedConnection(self, incomingMessage):
@@ -30,3 +37,9 @@ class CommandParser():
 
 		print('received the sample message:')
 		print(text)
+
+		result = {}
+		command = "sample messa"
+		result["command"] = command
+
+		return result

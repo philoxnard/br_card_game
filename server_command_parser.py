@@ -8,6 +8,9 @@ class CommandParser():
 
 	def handleParsedMessage(self, message):
 
+		print('back end is handling this message')
+		print(message)
+
 		command = message["command"]
 
 		if command == "check_if_connected":
@@ -33,28 +36,29 @@ class CommandParser():
 		This function will put the player that initiated the message into a lobby, which will eventually
 		become a game once we have enough players
 		"""
-
+		response = {}
 		connection_object = incomingMessage["connection_object"]
 		print('whats in connection object')
 		print(connection_object)
 
-		if self.lobby == None:
+		# if self.lobby == None:
 
-			self.lobby = Lobby()
+		# 	self.lobby = Lobby()
 
-		if self.lobby.current_size == self.lobby.max_size:
+		# if self.lobby.current_size == self.lobby.max_size:
 			# Lobby is full and we'll create a game out of it
-			self.lobby.create_game()
-
-		else:
-			self.lobby.add_player(connection_object)
+			# player_list = self.lobby.create_game()
 
 
-		response = {}
-		command = "add_player_to_lobby"
-		text = "okay hi i'm the server i just put you in a lobby"
+		command = "send_players_to_game"
 
 		response["command"] = command
-		response["text"] = text
+		# response["player_list"] = player_list
+
+
+		# else:
+		# 	self.lobby.add_player(connection_object)
+
+
 
 		return response

@@ -4,6 +4,9 @@ from kivy.app import App
 from kivy.uix.button import Button
 from kivy.uix.label import Label
 from kivy.uix.boxlayout import BoxLayout
+import time
+
+from threading import Thread
 
 from functools import partial
 
@@ -21,6 +24,11 @@ class BoxLayoutApp(App):
 
 		self.network = client_network.Network()
 		self.screen = screen_manager.ScreenManager()
+
+		self.server_pinger = Thread(target = self.ping_server, args=(1, ))
+		self.server_pinger.start()
+
+		self.state = "initializing"
 
 		# We'll check to see if we've successfully connected to the server
 		# If we're connected, we'll go straight to the login page
@@ -50,6 +58,18 @@ class BoxLayoutApp(App):
 
 		return drawn_screen
 
+	def ping_server(self, num):
+
+		while True:
+
+			if self.state == "waiting_for_game":
+
+				message = {}
+				command = "check_for_full_lobby"
+				message["command"] = command
+
+				self.network.send(message)
+
 	def login(self, username, event):
 
 		self.username = username
@@ -74,6 +94,8 @@ class BoxLayoutApp(App):
 		message["command"] = "add_player_to_lobby"
 
 		self.network.send(message)
+
+		self.state = "waiting_for_game"
 
 	def failed_to_connect_to_server(self):
 
