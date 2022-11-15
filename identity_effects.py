@@ -1,0 +1,2 @@
+aloona = None
+barshk = None
