@@ -14,7 +14,7 @@ class Network():
 
 		self.client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 		self.server = "127.0.0.1"
-		self.port = 54553
+		self.port = 54555
 		self.address = (self.server, self.port)
 
 		self.is_connection_established = self.connect()
@@ -31,14 +31,17 @@ class Network():
 
 			result = self.send(message)
 
+			print('result of connection is ')
+			print(result)
 			# If we got the expected result, then we know we're connected
-			if result["command"] == "affirm_connection":
+			if result["command"] == "assign_unique_id":
 
-				return True
+				unique_id = result["unique_id"]
+				return unique_id
 
 			else:
 
-				return False
+				return None
 
 		except Exception as e:
 			print(e)

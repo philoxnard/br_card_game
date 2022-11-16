@@ -4,7 +4,9 @@ class CommandParser():
 
 	def __init__(self):
 
-		self.lobby = None
+		# the player waiting list and the func that creates unique ids should prob
+		# be in a server tools doc or something like that
+		self.players_waiting_for_game = []
 
 	def handleParsedMessage(self, message):
 
@@ -21,13 +23,25 @@ class CommandParser():
 
 			response = self.handleAddPlayerToLobby(message)
 
+		elif command == "check_for_full_lobby":
+
+			response = self.checkIfPlayerLobbyIsFull(message)
+
+		else:
+
+			response = {}
+			response["command"] = "couldnt parse message from client"
+
 		return response
 
 	def handleConnectionCheck(self, incomingMessage):
 
 		response = {}
-		command = "affirm_connection"
+		# maybe assign unique id here
+		command = "assign_unique_id"
+		unique_id = "zxcv"
 		response["command"] = command
+		response["unique_id"] = unique_id
 
 		return response
 
@@ -37,28 +51,27 @@ class CommandParser():
 		become a game once we have enough players
 		"""
 		response = {}
-		connection_object = incomingMessage["connection_object"]
-		print('whats in connection object')
-		print(connection_object)
 
-		# if self.lobby == None:
+		unique_id = incomingMessage["unique_id"]
 
-		# 	self.lobby = Lobby()
+		self.players_waiting_for_game.append(unique_id)
 
-		# if self.lobby.current_size == self.lobby.max_size:
-			# Lobby is full and we'll create a game out of it
-			# player_list = self.lobby.create_game()
+		response["command"] = "sample text"
 
+		return response
 
-		command = "send_players_to_game"
+	def checkIfPlayerLobbyIsFull(self, incomingMessage):
 
-		response["command"] = command
-		# response["player_list"] = player_list
+		unique_id = incomingMessage["unique_id"]
 
+		response = {}
 
-		# else:
-		# 	self.lobby.add_player(connection_object)
+		if len(self.players_waiting_for_game) > 0:
 
+			response["command"] = "set_state_to_in_game"
 
+		else:
+
+			response["command"] = "keep_waiting"
 
 		return response

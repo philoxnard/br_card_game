@@ -1,18 +1,19 @@
 class CommandParser():
 
-	def handleParsedMessage(self, message):
+	def handleParsedMessage(self, message, screen=None):
 
 		print('inside client side command parser')
 
 		command = message["command"]
 
-		if command == "affirm_connection":
+		if command == "assign_unique_id":
 
-			result = self.handleAffirmedConnection(message)
+			print("gonna try to assign unique id")
+			result = self.handleAssignedUniqueID(message)
 
-		elif command == "add_player_to_lobby":
+		elif command == "set_state_to_in_game":
 
-			result = self.handleSampleMessage(message)
+			result = self.handleSetStateToInGame(message, screen)
 
 		else:
 
@@ -27,6 +28,24 @@ class CommandParser():
 
 		result = {}
 		command = "affirm_connection"
+		result["command"] = command
+
+		return result
+
+	def handleAssignedUniqueID(self, incomingMessage):
+
+		return incomingMessage
+
+	def handleSetStateToInGame(self, incomingMessage, screen):
+
+		print('gonna try to draw new screen')
+		if screen != None:
+
+			print('did we draw the screen')
+			screen.draw_sample_game_screen()
+
+		result = {}
+		command = "tried to draw new screen"
 		result["command"] = command
 
 		return result

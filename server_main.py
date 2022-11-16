@@ -20,7 +20,7 @@ class Server():
 	def __init__(self):
 
 		self.server = "127.0.0.1"
-		self.port = 54553
+		self.port = 54555
 
 		self.gameManager = GameManager()
 		self.commandParser = CommandParser()

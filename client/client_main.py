@@ -23,12 +23,14 @@ class BoxLayoutApp(App):
 		print('initializing front end')
 
 		self.network = client_network.Network()
+		self.commandParser = self.network.commandParser
 		self.screen = screen_manager.ScreenManager()
+
+		self.unique_id = None
+		self.state = "initializing"
 
 		self.server_pinger = Thread(target = self.ping_server, args=(1, ))
 		self.server_pinger.start()
-
-		self.state = "initializing"
 
 		# We'll check to see if we've successfully connected to the server
 		# If we're connected, we'll go straight to the login page
@@ -37,9 +39,10 @@ class BoxLayoutApp(App):
 
 			try:
 
-				connection = self.network.check_connection()
-				if connection == True:
+				unique_id = self.network.check_connection()
+				if unique_id != None:
 
+					self.unique_id = unique_id
 					# This should always be the chunk of code that fires unless the server is off
 
 					drawn_screen = self.on_connect()
@@ -66,9 +69,24 @@ class BoxLayoutApp(App):
 
 				message = {}
 				command = "check_for_full_lobby"
+				unique_id = self.unique_id
 				message["command"] = command
+				message["unique_id"] = unique_id
 
-				self.network.send(message)
+				response = self.network.send(message)
+
+				print('in ping server after response')
+				print(response)
+
+				if response["command"] == "set_state_to_in_game":
+
+					print('entering game')
+					self.enter_game()
+
+				# self.commandParser.handleParsedMessage(response, self.screen)
+
+			time.sleep(1)
+
 
 	def login(self, username, event):
 
@@ -89,13 +107,14 @@ class BoxLayoutApp(App):
 		print(decklist)
 		self.screen.draw_searching_for_game_screen()
 
+
+		self.state = "waiting_for_game"
 		# Feels like this should be somewhere else but idk yet
 		message = {}
 		message["command"] = "add_player_to_lobby"
+		message["unique_id"] = self.unique_id
 
 		self.network.send(message)
-
-		self.state = "waiting_for_game"
 
 	def failed_to_connect_to_server(self):
 

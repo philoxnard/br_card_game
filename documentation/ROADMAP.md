@@ -20,7 +20,7 @@ FIGURE OUT HOW TO JUST GET THE BACK END TO SEND STUFF TO FRONT WITHOUT NEEDING I
 A RESPONSE
 
 okay so the front can constantly ping the back
-now the back needs to be able to recognize when it has enough players for a game and put 
+now the back needs to be able to recognize when it has enough players for a game and put
 
 
 
