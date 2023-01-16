@@ -7,7 +7,7 @@ class Game():
 		self.starting_player_count = len(self.players)
 		self.current_player_count = self.starting_player_count
 
-		self.number_of_players = len(self.starting_player_count)
+		self.number_of_players = self.starting_player_count
 
 		self.assign_enemy_realms()
 
